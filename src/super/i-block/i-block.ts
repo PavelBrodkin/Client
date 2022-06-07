@@ -207,6 +207,12 @@ export default abstract class iBlock extends ComponentInterface {
 	readonly verbose: boolean = false;
 
 	/**
+	 * If true, without an internet connection, the component will be hidden
+	 */
+	@prop({type: Boolean, required: false})
+	hideIfOffline?: boolean;
+
+	/**
 	 * Component unique identifier
 	 */
 	@system({

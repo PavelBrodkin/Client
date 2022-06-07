@@ -16,6 +16,8 @@ import type { ModEvent, ModsDecl } from 'super/i-block/i-block';
 
 // eslint-disable-next-line @typescript-eslint/no-extraneous-class
 export default abstract class iVisible {
+	hideIfOffline?: boolean;
+
 	/**
 	 * Trait modifiers
 	 */
@@ -34,9 +36,11 @@ export default abstract class iVisible {
 	 *
 	 * @param component
 	 */
-	static initModEvents<T extends iBlock>(component: T): void {
+	static initModEvents<T extends iBlock & iVisible>(component: T): void {
 		const
 			{$el, localEmitter: $e} = component.unsafe;
+
+		component.sync.mod('hidden', '$root.isOnline', (v) => component.hideIfOffline && v === false);
 
 		$e.on('block.mod.*.hidden.*', (e: ModEvent) => {
 			if (e.type === 'remove' && e.reason !== 'removeMod') {
